@@ -1,0 +1,18 @@
+
+.item{
+    width: 100%;
+}
+.item .notActiveItem{
+    color:#0775FF;
+    width: 100%;
+    margin: 10px;
+}
+
+.item .isActiveItem{
+    background-color: #0775FF;
+    color: white;
+    border-radius: 10%;
+    width: 100%;
+    margin: 10px
+    
+}

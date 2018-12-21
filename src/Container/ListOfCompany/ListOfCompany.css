@@ -1,0 +1,7 @@
+.company{
+    height: 350px;
+    overflow: auto;
+    width: 33%;
+    margin: 5px;
+    overflow-x: hidden
+}
