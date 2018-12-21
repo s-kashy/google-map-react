@@ -1,12 +1,11 @@
 import React, { Component } from "react"
 import "./ListOfCountry.css"
 import { connect } from "react-redux";
-import *as typeAction from "../../Store/action/index"
+import * as typeAction from "../../Store/action/index"
 import Item from "../../Component/Component/Item"
 class ListOfCountry extends Component {
 
     state = {
-        
         listOfCountry: this.props.list,
         chosenId: null
     }
@@ -18,7 +17,6 @@ class ListOfCountry extends Component {
         this.props.sortByCountry(item.Country)
     }
     render() {
-
         let list = this.state.listOfCountry.map((list, index) => {
             return (<Item item={list.Country} key={index} id={list.Country} 
             chosenId={this.state.chosenId} click={()=>this.onClickHandler(list)} />)

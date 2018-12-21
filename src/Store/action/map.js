@@ -11,13 +11,11 @@ export const loadJson = () => {
     }
 }
 export const closeLoading = () => {
-
     return {
         type: type.CLOSE_LOADING
     }
 }
 export const loading = () => {
-
     return {
         type: type.LOADING
     }
@@ -25,32 +23,62 @@ export const loading = () => {
 
 export const sortByCity = () => {
     return (dispatch, getState) => {
-        let fullDataList = getState().map
-
-        fullDataList = fullDataList.allJsonFile
-
-        let cityUniq = _.uniqBy(fullDataList, "City")
-
-        let arr = []
+        let listOfCountrySorted = getState().map
+        listOfCountrySorted = listOfCountrySorted.sortCountryList
+        let listOfUniqCity = getState().map
+        listOfUniqCity = listOfUniqCity.allJsonFile
+        let defulatArray = getState().map
+        defulatArray = defulatArray.allJsonFile
+        listOfUniqCity = _.uniqBy(listOfUniqCity, "City")
+        let cityArray = []
         let counter = 0
-        for (let i = 0; i < cityUniq.length; i++) {
+        for (let i = 0; i < listOfCountrySorted.length; i++) {
             counter = 0
-            for (let j = 0; j < fullDataList.length; j++) {
-                if (fullDataList[j].City === cityUniq[i].City) {
-                    counter++
+            for (let j = 0; j < listOfUniqCity.length; j++) {
+                if (listOfCountrySorted[i].Country === listOfUniqCity[j].Country) {
+                    counter = checkAmountOfCompanyInCity(defulatArray, listOfUniqCity[j].City)
+
+                    cityArray.push({
+                        City: listOfUniqCity[j].City, amount: counter,
+                        Address: listOfUniqCity[j].Address, Country: listOfUniqCity[j].Country
+                    })
                 }
             }
-            arr.push({
-                City: cityUniq[i].City, amount: counter,
-                Address: cityUniq[i].Address, Country: cityUniq[i].Country
-            })
         }
-        arr = sortArrayAmount(arr)
-        dispatch(loadCitSortList(arr))
+     
+        sortArrayAmount(cityArray)
+       dispatch(loadCitSortList(cityArray))
+   
+
+    }
+
+}
+
+export const citySelected = (city) => {
+
+    return {
+        type: type.CITY_SELECTED,
+        payload: city
     }
 }
-export const loadCitSortList = (arr) => {
+export const cityDispatch=(city)=>{
 
+    return dispatch =>{
+        dispatch(citySelected(city))
+
+    }
+}
+export const checkAmountOfCompanyInCity = (array, cityName) => {
+    let counter = 0
+    for (let i = 0; i < array.length; i++) {
+        if (cityName === array[i].City) {
+            counter++
+        }
+    }
+    return counter
+
+}
+export const loadCitSortList = (arr) => {
     return {
         type: type.SORT_CITY,
         payload: arr
@@ -65,10 +93,12 @@ export const loadCompanyName = (arr) => {
 export const sortByCompany = () => {
     return (dispatch, getState) => {
         let data = getState().map
+       let  citySelected=data.citySelect
+       console.log(citySelected)
         data = data.allJsonFile
         sortObjectArray(data, "CompanyName")
         dispatch(loadCompanyName(data))
-        
+
         dispatch(selectedCompany(data[0]))
 
     }
@@ -119,7 +149,7 @@ export const getAllJsonFileAndSort = () => {
 export const sortAllCompanyNameByCity = (city) => {
     return dispatch => {
         let jsonOriginalList = dispatch(loadTypeOfList())
-   
+
         let newSortedList = jsonOriginalList.filter(list => {
             return list.City === city
         })
@@ -129,15 +159,14 @@ export const sortAllCompanyNameByCity = (city) => {
 
     }
 }
-export const selectedCompany=(company)=>{
-return{
-    type:type.COMPANY_SELECTED,
-    payload:company
-}
-        
+export const selectedCompany = (company) => {
+    return {
+        type: type.COMPANY_SELECTED,
+        payload: company
+    }
+
 }
 export const sortAllCityByCountry = (country) => {
-
     return dispatch => {
         let jsonOriginalList = dispatch(loadTypeOfList())
         jsonOriginalList = _.uniqBy(jsonOriginalList, "City")

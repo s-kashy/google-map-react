@@ -8,7 +8,8 @@ export class MapContainer extends Component {
         lat: null,
         lng: null,
         toRender: false,
-        selectedCompany: this.props.selected
+        selectedCompany: this.props.selected,
+        nameOfCompany: this.props.selected.CompanyName
     }
     componentWillReceiveProps(nextProps) {
         if (this.state.selectedCompany.Id !== nextProps.selected.Id) {
@@ -16,26 +17,30 @@ export class MapContainer extends Component {
         }
     }
     updateMap = () => {
-         this.setState({selectedCompany:this.props.selected},()=>{
-        Geocode.fromAddress(`${this.state.selectedCompany.Address}
+
+        this.setState({
+            selectedCompany: this.props.selected,
+            toRender:false,
+            nameOfCompany: this.props.selected.CompanyName
+        }, () => {
+            Geocode.fromAddress(`${this.state.selectedCompany.Address}
         ${this.state.selectedCompany.City}
          ${this.state.selectedCompany.Country}`).then(
-           response => {
-            
-               const { lat, lng } = response.results[0].geometry.location;
-               this.setState({ lat: lat, lng: lng, toRender: false },()=>{
-                   this.setState({toRender:true})
-               })
-           },
-           error => {
-               this.setState({ toRender: false })
-           }
-       );
-      })
+                response => {
+                    const { lat, lng } = response.results[0].geometry.location;
+                    this.setState({ lat: lat, lng: lng }, () => {
+                        this.setState({ toRender: true })
+
+                    })
+                },
+                error => {
+                    this.setState({ toRender: false })
+                }
+            );
+        })
     }
     componentDidMount() {
-     
-   
+
         Geocode.fromAddress(`${this.state.selectedCompany.Address}
          ${this.state.selectedCompany.City}
           ${this.state.selectedCompany.Country}`).then(
@@ -51,20 +56,27 @@ export class MapContainer extends Component {
 
 
     render() {
+     
         return (
             <div style={{ bottom: "200" }}>
                 {this.state.toRender && (<Map google={this.props.google}
                     initialCenter={{ lat: this.state.lat, lng: this.state.lng }}
                     zoom={13}>
-
-                    <Marker onClick={this.onMarkerClick}
-                        name={"israel"} />
-
-                    <InfoWindow onClose={this.onInfoWindowClose}>
+                    <Marker
+                        onClick={this.onMarkerClick}
+                        title={this.state.nameOfCompany}
+                        position={{ lat: this.state.lat, lng: this.state.lng }}
+                        name={this.state.nameOfCompany}
+                    />
+                    {/* <InfoWindow >
                         <div>
-
+                            <h1>{this.state.selectedCompany.CompanyName}</h1>
                         </div>
-                    </InfoWindow>
+                    </InfoWindow> */}
+                    {/* <InfoWindow
+                        marker={this.state.selectedCompany.CompanyName}
+                        visible={false}
+                    /> */}
                 </Map>)}
             </div>
         );

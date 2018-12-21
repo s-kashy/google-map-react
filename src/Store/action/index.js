@@ -2,4 +2,6 @@ export{getAllJsonFileAndSort,
     sortByCity,
     sortAllCityByCountry,
     sortAllCompanyNameByCity,
-    selectedCompany}from "./map"
+    selectedCompany,
+    citySelected,
+    cityDispatch}from "./map"

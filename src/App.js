@@ -45,7 +45,7 @@ class App extends Component {
 
         </div>
         <div className="right">
-          <MapContainer  selected={this.props.selectedCompany}/>
+          {/* <MapContainer  selected={this.props.selectedCompany}/> */}
         </div>
       
       </div>
