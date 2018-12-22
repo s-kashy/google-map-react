@@ -30,11 +30,11 @@ class ListOfCompany extends Component {
         }
     }
     updateList = (city) => {
-
+    
         this.setState({ reRender: false }, () => {
             this.setState({ listOfCompany: this.props.list, reRender: true,
                 chosenId:this.props.list[0].CompanyName }, () => { 
-                    this.props.selectedCompany(this.props.list[0])
+                 
                 })
         })
 
@@ -42,8 +42,9 @@ class ListOfCompany extends Component {
     }
 
     onClickHandler = (item) => {
+        this.props.selectedCompany(item)
         this.setState({ chosenId: item.CompanyName }, () => {
-            this.props.selectedCompany(item)
+            
         })
     }
 

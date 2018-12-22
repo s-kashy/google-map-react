@@ -156,6 +156,7 @@ export const sortAllCompanyNameByCity = (city) => {
         sortObjectArray(newSortedList, "CompanyName")
         dispatch(citySelected(city))
         dispatch(loadCompanyName(newSortedList))
+        // dispatch(selectedCompany(newSortedList[0]))
 
 
     }

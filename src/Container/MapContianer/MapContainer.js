@@ -9,22 +9,28 @@ export class MapContainer extends Component {
         lng: null,
         toRender: false,
         selectedCompany: this.props.selected,
+
         nameOfCompany: this.props.selected.CompanyName
     }
     componentWillReceiveProps(nextProps) {
-        if (this.state.selectedCompany.Id !== nextProps.selected.Id) {
+       
+        if ( this.state.selectedCompany.Address!== nextProps.selected.Address) {
             this.updateMap()
         }
     }
     updateMap = () => {
+      
+        this.setState({ toRender: false }, () => {
+
+        })
         this.setState({
             selectedCompany: this.props.selected,
-            toRender:false,
+
             nameOfCompany: this.props.selected.CompanyName
         }, () => {
-            Geocode.fromAddress(`${this.state.selectedCompany.Address}
-        ${this.state.selectedCompany.City}
-         ${this.state.selectedCompany.Country}`).then(
+            Geocode.fromAddress(`${this.props.selected.Address}
+        ${this.props.selected.City}
+         ${this.props.selected.Country}`).then(
                 response => {
                     const { lat, lng } = response.results[0].geometry.location;
                     this.setState({ lat: lat, lng: lng }, () => {
@@ -39,7 +45,6 @@ export class MapContainer extends Component {
         })
     }
     componentDidMount() {
-
         Geocode.fromAddress(`${this.state.selectedCompany.Address}
          ${this.state.selectedCompany.City}
           ${this.state.selectedCompany.Country}`).then(
@@ -55,7 +60,7 @@ export class MapContainer extends Component {
 
 
     render() {
-     
+
         return (
             <div style={{ bottom: "200" }}>
                 {this.state.toRender && (<Map google={this.props.google}

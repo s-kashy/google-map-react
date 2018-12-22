@@ -8,7 +8,7 @@ class ListOfCities extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.state.listOfCities[0].Id !== nextProps.list[0].Id) {
             
-            this.props.citySelected(nextProps.list[0].City)
+            this.props.citySelected(nextProps.list[0])
             this.setState({
                 listOfCities: nextProps.list,
                 chosenId: nextProps.list[0].City
