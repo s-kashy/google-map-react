@@ -17,7 +17,6 @@ export class MapContainer extends Component {
         }
     }
     updateMap = () => {
-
         this.setState({
             selectedCompany: this.props.selected,
             toRender:false,

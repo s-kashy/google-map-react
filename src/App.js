@@ -41,11 +41,11 @@ class App extends Component {
         <div className="left">
           <ListOfCountry list={this.props.sortCountryList}  />
           <ListOfCities list ={this.props.sortCityList}/>
-          <ListOfCompany list ={this.props.sortCompanyList} />
+          <ListOfCompany list ={this.props.sortCompanyList} city={this.props.city} />
 
         </div>
         <div className="right">
-          {/* <MapContainer  selected={this.props.selectedCompany}/> */}
+          <MapContainer  selected={this.props.selectedCompany}/>
         </div>
       
       </div>
@@ -61,7 +61,8 @@ const mapStateToProps = state => {
     sortCountryList: state.map.sortCountryList,
     sortCompanyList: state.map.sortCompanyList,
     loadingData: state.map.loadingData,
-    selectedCompany:state.map.companySelected
+    selectedCompany:state.map.companySelected,
+    city:state.map.citySelect
 
 
   };
