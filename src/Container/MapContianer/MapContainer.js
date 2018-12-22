@@ -67,10 +67,10 @@ export class MapContainer extends Component {
                     initialCenter={{ lat: this.state.lat, lng: this.state.lng }}
                     zoom={13}>
                     <Marker
-                        onClick={this.onMarkerClick}
-                        title={this.state.nameOfCompany}
+                     
+                        title={this.props.selected.CompanyName}
                         position={{ lat: this.state.lat, lng: this.state.lng }}
-                        name={this.state.nameOfCompany}
+                        name={this.props.selected.CompanyName}
                     />
                     {/* <InfoWindow >
                         <div>
