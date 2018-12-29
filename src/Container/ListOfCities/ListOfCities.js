@@ -4,33 +4,53 @@ import "./ListOfCities.css"
 import SingletonClass from "../../SingletonClass/SingletonClass"
 import * as typeAction from "../../Store/action/index"
 import { connect } from "react-redux";
+
 class ListOfCities extends Component {
+
     componentWillReceiveProps(nextProps) {
-        if (this.state.listOfCities[0].Id !== nextProps.list[0].Id) {
-            
-            this.props.citySelected(nextProps.list[0])
+        
+        if (nextProps.cityRequestList&&
+            nextProps.cityRequestList[0].City!==this.state.listOfCities[0].City) {
+             
             this.setState({
-                listOfCities: nextProps.list,
-                chosenId: nextProps.list[0].City
+                listOfCities: nextProps.cityRequestList,
+                chosenId: nextProps.cityRequestList[0].City
             }, () => {
 
             })
+
+            this.props.citySelected(nextProps.cityRequestList[0].City)
+            this.props.sortByCity(nextProps.cityRequestList[0].City)
         }
 
-    }
-   
-    componentDidMount() {
         
+        //   if (this.state.listOfCities[0].Id !== nextProps.list[0].Id) {
+
+        //     this.props.citySelected(nextProps.list[0])
+        //     this.setState({
+        //         listOfCities: nextProps.list,
+        //         chosenId: nextProps.list[0].City
+        //     }, () => {
+
+        //     })
+        // }
+
+    }
+
+    componentDidMount() {
         let country = this.props.sortCountry[0].Country
+
         let arr = this.props.list.filter(t => {
             return t.Country === country
         })
+   
         SingletonClass.savePosition(arr[0].City)
+        this.props.citySelected(arr[0].City)
         this.setState({ chosenId: arr[0].City, listOfCities: arr }, () => {
-         
+
 
         })
-       
+
     }
     constructor(props) {
         super(props)
@@ -40,6 +60,7 @@ class ListOfCities extends Component {
         }
     }
     onClickHandler = (item) => {
+        console.log(item)
         this.setState({ chosenId: item.City }, () => {
             this.props.sortByCity(item.City)
         }, () => {
@@ -64,7 +85,8 @@ const mapStateToProps = (state) => {
     return {
         sortCityList: state.map.sortCityList,
         sortCountry: state.map.sortCountryList,
-        selectedCity: state.map.citySelect
+        selectedCity: state.map.citySelect,
+        cityRequestList: state.map.cityRequestList
     }
 }
 const mapStateDispatchToProps = dispatch => {
@@ -72,8 +94,8 @@ const mapStateDispatchToProps = dispatch => {
         sortByCity: (city) =>
             dispatch(typeAction.sortAllCompanyNameByCity(city)),
         citySelected: (city) => (typeAction.citySelected(city)),
-        dispatchChossenCity:(city)=>(typeAction.dispatchChossenCity(city))
-
+        dispatchChossenCity: (city) => (typeAction.dispatchChossenCity(city))
+       
     };
 };
 export default connect(

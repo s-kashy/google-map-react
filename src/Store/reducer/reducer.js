@@ -9,6 +9,7 @@ const initialState = {
     loadingData: false,
     companySelected: null,
     citySelect: null,
+    cityRequestList: null
 
 }
 
@@ -35,8 +36,11 @@ const reducer = (state = initialState, action) => {
         case actionType.COMPANY_SELECTED:
             return updateObject(state, { companySelected: action.payload })
         case actionType.CITY_SELECTED:
-    
+
             return updateObject(state, { citySelect: action.payload })
+
+        case actionType.LOAD_REQUEST_CITY_LIST:
+            return updateObject(state, { cityRequestList: action.payload })
         default:
             return state;
 

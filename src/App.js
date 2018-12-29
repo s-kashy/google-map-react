@@ -40,7 +40,7 @@ class App extends Component {
       <div className="childApp">
         <div className="left">
           <ListOfCountry list={this.props.sortCountryList}  />
-          <ListOfCities list ={this.props.sortCityList}/>
+          <ListOfCities list ={this.props.sortCityList} filterCity={this.props.cityRequestList}/>
           <ListOfCompany list ={this.props.sortCompanyList} city={this.props.city} />
 
         </div>
@@ -61,6 +61,7 @@ const mapStateToProps = state => {
     sortCountryList: state.map.sortCountryList,
     sortCompanyList: state.map.sortCompanyList,
     loadingData: state.map.loadingData,
+    cityRequestList:state.map.cityRequestList,
     selectedCompany:state.map.companySelected,
     city:state.map.citySelect
 

@@ -30,6 +30,7 @@ export const sortByCity = () => {
         let defulatArray = getState().map
         defulatArray = defulatArray.allJsonFile
         listOfUniqCity = _.uniqBy(listOfUniqCity, "City")
+   
         let cityArray = []
         let counter = 0
         for (let i = 0; i < listOfCountrySorted.length; i++) {
@@ -38,16 +39,20 @@ export const sortByCity = () => {
                 if (listOfCountrySorted[i].Country === listOfUniqCity[j].Country) {
                     counter = checkAmountOfCompanyInCity(defulatArray, listOfUniqCity[j].City)
                     cityArray.push({
-                        City: listOfUniqCity[j].City, amount: counter,
-                        Address: listOfUniqCity[j].Address, Country: listOfUniqCity[j].Country
+                        Address: listOfUniqCity[j].Address,
+                         Country: listOfUniqCity[j].Country,
+                         Id:listOfUniqCity[j].Id,
+                         amount:counter,
+                         CompanyName:listOfUniqCity[j].CompanyName,
+                         City:listOfUniqCity[j].City
                     })
                 }
             }
         }
-     
+
         sortArrayAmount(cityArray)
-       dispatch(loadCitSortList(cityArray))
-   
+        dispatch(loadCitSortList(cityArray))
+
 
     }
 
@@ -60,10 +65,10 @@ export const citySelected = (city) => {
         payload: city
     }
 }
-export const dispatchChossenCity=(city)=>{
-return dispatch=>{
-    dispatch(citySelected(city))
-}
+export const dispatchChossenCity = (city) => {
+    return dispatch => {
+        dispatch(citySelected(city))
+    }
 
 
 }
@@ -92,13 +97,13 @@ export const loadCompanyName = (arr) => {
 export const sortByCompany = () => {
     return (dispatch, getState) => {
         let data = getState().map
-       let  citySelected=data.sortCityList
+        let citySelected = data.sortCityList
 
-       
+
         data = data.allJsonFile
         sortObjectArray(data, "CompanyName")
         dispatch(loadCompanyName(data))
-      
+
 
     }
 }
@@ -146,13 +151,14 @@ export const getAllJsonFileAndSort = () => {
 }
 
 export const sortAllCompanyNameByCity = (city) => {
- 
+console.log("city sort by",city)
     return dispatch => {
         let jsonOriginalList = dispatch(loadTypeOfList())
+        jsonOriginalList=JSON.parse(JSON.stringify(jsonOriginalList))
         let newSortedList = jsonOriginalList.filter(list => {
             return list.City === city
         })
-       
+
         sortObjectArray(newSortedList, "CompanyName")
         dispatch(citySelected(city))
         dispatch(loadCompanyName(newSortedList))
@@ -168,15 +174,27 @@ export const selectedCompany = (company) => {
     }
 
 }
+export const loadRequestList=(arr)=>{
+    return{
+        type:type.LOAD_REQUEST_CITY_LIST,
+        payload:arr
+    }
+}
 export const sortAllCityByCountry = (country) => {
+
     return dispatch => {
-        let jsonOriginalList = dispatch(loadTypeOfList())
-        jsonOriginalList = _.uniqBy(jsonOriginalList, "City")
+        let jsonOriginalList =dispatch( loadCitySortList())
+        
+       
         let newSortedList = jsonOriginalList.filter(list => {
             return list.Country === country
         })
+        
         newSortedList = sortArrayAmount(newSortedList)
-        dispatch(loadCitSortList(newSortedList))
+        newSortedList= _.uniqBy(newSortedList, "City")
+        dispatch(citySelected(newSortedList[0].City))
+        dispatch(loadRequestList(newSortedList))
+        dispatch(loadCitSortList(jsonOriginalList))
 
     }
 
@@ -186,6 +204,14 @@ export const loadTypeOfList = () => {
     return (dispatch, getState) => {
         let data = getState().map
         return data.allJsonFile
+
+    }
+}
+export const loadCitySortList = () => {
+
+    return (dispatch, getState) => {
+        let data = getState().map
+        return data.sortCityList
 
     }
 }

@@ -6,6 +6,7 @@ export const SORT_COMPANY="sort company"
 export const CLOSE_LOADING="close loading"
 export const COMPANY_SELECTED="company Selected"
 export const CITY_SELECTED="city selected"
+export const LOAD_REQUEST_CITY_LIST="load request city list"
 
 
 

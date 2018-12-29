@@ -6,6 +6,7 @@ export default class SingletonClass {
     }
     static savePosition = (tempPosition) => {
         if (!SingletonClass.instance) {
+     
             SingletonClass.position = SingletonClass.createInstance();
         }
         SingletonClass.position = tempPosition

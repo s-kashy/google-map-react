@@ -6,13 +6,12 @@ import { connect } from "react-redux";
 import Item from "../../Component/Component/Item"
 class ListOfCompany extends Component {
     componentDidMount() {
-        
         let city = SingletonClass.getPosition()
         let newArray = this.props.list.filter(t => {
             return t.City === city
         })
         this.props.selectedCompany(newArray[0])
-  
+
         this.setState({ listOfCompany: newArray, chosenId: newArray[0].CompanyName, filterCity: city })
 
     }
@@ -23,23 +22,19 @@ class ListOfCompany extends Component {
         reRender: true
     }
     componentWillReceiveProps(nextProps) {
-
+     
         if (this.state.filterCity !== nextProps.city) {
-
-            this.updateList(nextProps.city)
+       
+            this.setState({ reRender: false }, () => {
+                this.setState({ listOfCompany: nextProps.list, reRender: true,
+                    chosenId:nextProps.list[0].CompanyName,filterCity:nextProps.city }, () => { 
+                     
+                    })
+            })
+        //    this.props.selectedCompany(nextProps.list[0])
         }
     }
-    updateList = (city) => {
-    
-        this.setState({ reRender: false }, () => {
-            this.setState({ listOfCompany: this.props.list, reRender: true,
-                chosenId:this.props.list[0].CompanyName }, () => { 
-                 
-                })
-        })
-
-
-    }
+  
 
     onClickHandler = (item) => {
         this.props.selectedCompany(item)
@@ -63,7 +58,8 @@ class ListOfCompany extends Component {
 const mapStateToProps = (state) => {
     return {
         listOfCompany: state.map.sortCompanyList,
-        citySelect: state.map.citySelect
+        citySelect: state.map.citySelect,
+        compSelected:state.map.compSelected
     }
 }
 const mapStateDispatchToProps = dispatch => {
